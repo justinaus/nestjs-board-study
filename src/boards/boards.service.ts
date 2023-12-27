@@ -32,4 +32,13 @@ export class BoardsService {
   deleteBoard(id: string) {
     this.boards = this.boards.filter((board) => board.id !== id);
   }
+
+  updateBoardStatus(id: string, status: BoardStatus) {
+    const board = this.getBoardById(id);
+
+    // TODO. undefined 처리?
+
+    board.status = status;
+    return board;
+  }
 }
