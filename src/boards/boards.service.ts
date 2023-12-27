@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Board, BoardStatus } from './board.model';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -26,7 +26,17 @@ export class BoardsService {
 
   // TODO. 왜 리턴 타입이 Board로 추론 되는지 이해가 안감. Board | undefined로 추론되어야 하는거 아닌가?
   getBoardById(id: string) {
-    return this.boards.find((board) => board.id === id);
+    const found = this.boards.find((board) => board.id === id);
+
+    // 그냥 익셉션 알아서 처리해야되는듯.
+    if (!found) {
+      // throw new NotFoundException();
+
+      // 문구 커스텀.
+      throw new NotFoundException(`Can't find Board with id ${id}`);
+    }
+
+    return found;
   }
 
   deleteBoard(id: string) {
