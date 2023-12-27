@@ -23,4 +23,9 @@ export class BoardsService {
 
     return board;
   }
+
+  // TODO. 왜 리턴 타입이 Board로 추론 되는지 이해가 안감. Board | undefined로 추론되어야 하는거 아닌가?
+  getBoardById(id: string) {
+    return this.boards.find((board) => board.id === id);
+  }
 }
