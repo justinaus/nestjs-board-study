@@ -29,10 +29,10 @@ export class BoardsController {
   //   return this.boardsService.createBoard(createBoardDto);
   // }
 
-  // @Get('/:id')
-  // getBoardById(@Param('id') id: string) {
-  //   return this.boardsService.getBoardById(id);
-  // }
+  @Get('/:id')
+  getBoardById(@Param('id') id: number) {
+    return this.boardsService.getBoardById(id);
+  }
 
   // @Delete('/:id')
   // deleteBoard(@Param('id') id: string) {

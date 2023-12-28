@@ -2,9 +2,17 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { BoardStatus } from './board-status.enum';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateBoardDto } from './dto/create-board.dto';
+import { BoardRepository } from './board.repository';
+import { In } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class BoardsService {
+  constructor(
+    // Inject Repository to Service
+    @InjectRepository(BoardRepository)
+    private boardsRepository: BoardRepository,
+  ) {}
   // getAllBoards() {
   //   return this.boards;
   // }
@@ -18,17 +26,19 @@ export class BoardsService {
   //   this.boards.push(board);
   //   return board;
   // }
-  // // TODO. 왜 리턴 타입이 Board로 추론 되는지 이해가 안감. Board | undefined로 추론되어야 하는거 아닌가?
-  // getBoardById(id: string) {
-  //   const found = this.boards.find((board) => board.id === id);
-  //   // 그냥 익셉션 알아서 처리해야되는듯.
-  //   if (!found) {
-  //     // throw new NotFoundException();
-  //     // 문구 커스텀.
-  //     throw new NotFoundException(`Can't find Board with id ${id}`);
-  //   }
-  //   return found;
-  // }
+
+  async getBoardById(id: number) {
+    const found = await this.boardsRepository.findOneBy({ id });
+
+    if (!found) {
+      // throw new NotFoundException();
+      // 문구 커스텀.
+      throw new NotFoundException(`Can't find Board with id ${id}`);
+    }
+
+    return found;
+  }
+
   // deleteBoard(id: string) {
   //   const found = this.getBoardById(id);
   //   this.boards = this.boards.filter((board) => board.id !== found.id);
