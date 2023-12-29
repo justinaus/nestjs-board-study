@@ -1,6 +1,25 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Board } from './board.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CreateBoardDto } from './dto/create-board.dto';
+import { BoardStatus } from './board-status.enum';
 
-// TODO...
-@EntityRepository(Board)
-export class BoardRepository extends Repository<Board> {}
+export class BoardRepository extends Repository<Board> {
+  // constructor 추가
+  constructor(@InjectRepository(Board) private dataSource: DataSource) {
+    // super(Board, dataSource.createEntityManager());
+    super(Board, dataSource.manager); // 변경
+  }
+
+  async createBoard({ title, description }: CreateBoardDto) {
+    const board = this.create({
+      title,
+      description,
+      status: BoardStatus.PUBLIC,
+    });
+
+    await this.save(board);
+
+    return board;
+  }
+}
