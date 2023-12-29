@@ -9,9 +9,9 @@ export class BoardsService {
     // @InjectRepository(BoardRepository)
     private boardsRepository: BoardRepository,
   ) {}
-  // getAllBoards() {
-  //   return this.boards;
-  // }
+  getAllBoards() {
+    return this.boardsRepository.find();
+  }
 
   createBoard(createBoardDto: CreateBoardDto) {
     return this.boardsRepository.createBoard(createBoardDto);
