@@ -28,10 +28,17 @@ export class BoardsService {
     return found;
   }
 
-  // deleteBoard(id: string) {
-  //   const found = this.getBoardById(id);
-  //   this.boards = this.boards.filter((board) => board.id !== found.id);
-  // }
+  async deleteBoard(id: number) {
+    const result = await this.boardsRepository.delete(id);
+
+    // result DeleteResult { raw: [], affected: 1 } 성공.
+    // result DeleteResult { raw: [], affected: 0 } 실패.
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Can't find Board with id ${id}`);
+    }
+  }
+
   // updateBoardStatus(id: string, status: BoardStatus) {
   //   const board = this.getBoardById(id);
   //   // TODO. undefined 처리?
