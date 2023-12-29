@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardRepository } from './board.repository';
+import { BoardStatus } from './board-status.enum';
 
 @Injectable()
 export class BoardsService {
@@ -39,10 +40,13 @@ export class BoardsService {
     }
   }
 
-  // updateBoardStatus(id: string, status: BoardStatus) {
-  //   const board = this.getBoardById(id);
-  //   // TODO. undefined 처리?
-  //   board.status = status;
-  //   return board;
-  // }
+  async updateBoardStatus(id: number, status: BoardStatus) {
+    const board = await this.getBoardById(id);
+
+    board.status = status;
+
+    await this.boardsRepository.save(board);
+
+    return board;
+  }
 }
