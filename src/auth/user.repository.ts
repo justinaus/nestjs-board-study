@@ -13,7 +13,7 @@ import * as bcrypt from 'bcryptjs';
 export class UserRepository extends Repository<User> {
   // constructor 추가
   constructor(@InjectRepository(User) private dataSource: DataSource) {
-    // super(Board, dataSource.createEntityManager());
+    // super(User, dataSource.createEntityManager());
     super(User, dataSource.manager); // 변경
   }
 
