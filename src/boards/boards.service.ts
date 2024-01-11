@@ -36,8 +36,13 @@ export class BoardsService {
     return found;
   }
 
-  async deleteBoard(id: number) {
-    const result = await this.boardsRepository.delete(id);
+  async deleteBoard(id: number, user: User) {
+    const result = await this.boardsRepository.delete({
+      id,
+      user: {
+        id: user.id,
+      },
+    });
 
     // result DeleteResult { raw: [], affected: 1 } 성공.
     // result DeleteResult { raw: [], affected: 0 } 실패.
