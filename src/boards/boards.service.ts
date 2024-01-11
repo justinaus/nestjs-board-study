@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardRepository } from './board.repository';
 import { BoardStatus } from './board-status.enum';
+import { User } from 'src/auth/user.entity';
 
 @Injectable()
 export class BoardsService {
@@ -13,8 +14,8 @@ export class BoardsService {
     return this.boardsRepository.find();
   }
 
-  createBoard(createBoardDto: CreateBoardDto) {
-    return this.boardsRepository.createBoard(createBoardDto);
+  createBoard(createBoardDto: CreateBoardDto, user: User) {
+    return this.boardsRepository.createBoard(createBoardDto, user);
   }
 
   async getBoardById(id: number) {
