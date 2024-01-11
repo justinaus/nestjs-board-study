@@ -10,8 +10,14 @@ export class BoardsService {
     // @InjectRepository(BoardRepository)
     private boardsRepository: BoardRepository,
   ) {}
-  getAllBoards() {
-    return this.boardsRepository.find();
+  async getAllBoards(user: User) {
+    const query = this.boardsRepository.createQueryBuilder('board');
+
+    query.where('board.userId = :userId', { userId: user.id });
+
+    const boards = await query.getMany();
+
+    return boards;
   }
 
   createBoard(createBoardDto: CreateBoardDto, user: User) {
